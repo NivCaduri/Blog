@@ -1,1 +1,1 @@
-dbpwd = "some password"
+dbpwd = "somePassword"
