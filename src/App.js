@@ -1,5 +1,5 @@
 import Header from "./header/Header";
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./home/Home";
 import About from "./about/About";
 import New from "./new/New";
@@ -8,21 +8,21 @@ import OpenPost from "./home/OpenPost";
 
 function App() {
   return (
-      <div>
-        <header>
-          <Header />
-        </header>
+    <div>
+      <header>
+        <Header />
+      </header>
 
-        <section>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/new" element={<New />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/post/:id" element={<OpenPost />} />
-            </Routes>
-        </section>
-      </div>
+      <section>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/new" element={<New />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/post/:id" element={<OpenPost />} />
+        </Routes>
+      </section>
+    </div>
   );
 }
 
