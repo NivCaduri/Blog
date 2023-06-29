@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { Box, Button, FormLabel, TextField, Typography } from "@mui/material";
-import { addPost } from "../api-helpers/helpers";
+import React, { useState } from 'react';
+import { Box, Button, FormLabel, TextField, Typography } from '@mui/material';
+import { addPost } from '../api-helpers/helpers';
 
 const New = () => {
-  const [inputs, setInputs] = useState({ title: "", body: "", imageUrl: "" });
+  const [inputs, setInputs] = useState({
+    title: '',
+    body: '',
+    imageUrl: '',
+  });
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
@@ -18,9 +22,9 @@ const New = () => {
       .catch((err) => console.log(err));
   };
   return (
-    <Box display="flex" flexDirection={"column"} width="100%" height="100%">
+    <Box display="flex" flexDirection={'column'} width="100%" height="100%">
       <Box display="flex" margin="auto">
-        <Typography fontWeight={"bold"} variant="h4">
+        <Typography fontWeight={'bold'} variant="h4">
           Write Your New Post
         </Typography>
       </Box>
@@ -29,7 +33,7 @@ const New = () => {
           padding={3}
           display="flex"
           margin="auto"
-          flexDirection={"column"}
+          flexDirection={'column'}
           width="80%"
         >
           <FormLabel>Title</FormLabel>
@@ -61,7 +65,7 @@ const New = () => {
           <Button
             type="submit"
             color="warning"
-            sx={{ width: "50%", margin: "auto", mt: 2, borderRadius: 7 }}
+            sx={{ width: '50%', margin: 'auto', mt: 2, borderRadius: 7 }}
             variant="contained"
           >
             Post

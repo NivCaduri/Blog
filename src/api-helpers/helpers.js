@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const getAllPosts = async () => {
-  const res = await axios.get("/posts");
+  const res = await axios.get('/posts');
   if (res.status !== 200) {
-    return console.log("Some Error Occurred");
+    return console.log('Some Error Occurred');
   }
 
   const data = res.data;
@@ -12,15 +12,19 @@ export const getAllPosts = async () => {
 
 export const sendLoginRequest = async (signup, data) => {
   const res = await axios
-    .post(`/users/${signup ? "signup" : "login"}/`, {
-      name: data.name ? data.name : "",
-      username: data.username,
-      password: data.password,
-    })
+    .post(
+      `/users/${signup ? 'signup' : 'login'}`,
+      {
+        name: data.name ? data.name : '',
+        username: data.username,
+        password: data.password,
+      },
+      { withCredentials: true }
+    )
     .catch((err) => console.log(err));
 
   if (res.status !== 200 && res.status !== 201) {
-    return console.log("Unable to Login");
+    return console.log('Unable to Login');
   }
   const resData = await res.data;
   return resData;
@@ -28,7 +32,7 @@ export const sendLoginRequest = async (signup, data) => {
 
 export const addPost = async (data) => {
   const res = await axios
-    .post("/posts/", {
+    .post('/posts', {
       title: data.title,
       body: data.body,
       imageUrl: data.imageUrl,
@@ -36,7 +40,7 @@ export const addPost = async (data) => {
     .catch((err) => console.log(err));
 
   if (res.status !== 201) {
-    return console.log("Error Occurred");
+    return console.log('Error Occurred');
   }
 
   const resData = await res.data;
