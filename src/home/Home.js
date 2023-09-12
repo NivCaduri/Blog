@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Box } from "@mui/material";
-import PostItem from "./PostItem";
-import { getAllPosts } from "../api-helpers/helpers";
+import React, { useEffect, useState } from 'react';
+import { Box } from '@mui/material';
+import PostItem from './PostItem';
+import { getAllPosts } from '../api-helpers/helpers';
 
 const Home = () => {
   const [posts, setPosts] = useState();
@@ -13,12 +13,12 @@ const Home = () => {
   return (
     <Box
       display="flex"
-      flexDirection={"column"}
+      flexDirection={'column'}
       padding={3}
       justifyContent="center"
-      alignItems={"center"}
+      alignItems={'center'}
     >
-      {" "}
+      {' '}
       {posts &&
         posts.map((item, index) => (
           <PostItem
@@ -26,7 +26,7 @@ const Home = () => {
             title={item.title}
             body={item.body}
             user_id={item.user_id}
-            image={item.image}
+            created_at={item.created_at}
             key={index}
           />
         ))}

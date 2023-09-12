@@ -32,11 +32,15 @@ export const sendLoginRequest = async (signup, data) => {
 
 export const addPost = async (data) => {
   const res = await axios
-    .post('/posts', {
-      title: data.title,
-      body: data.body,
-      imageUrl: data.imageUrl,
-    })
+    .post(
+      '/posts',
+      {
+        title: data.title,
+        body: data.body,
+        user_id: data.user_id,
+      },
+      { withCredentials: true }
+    )
     .catch((err) => console.log(err));
 
   if (res.status !== 201) {

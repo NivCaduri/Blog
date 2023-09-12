@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Box, Button, FormLabel, TextField, Typography } from "@mui/material";
-import { sendLoginRequest } from "../api-helpers/helpers";
+import React, { useState } from 'react';
+import { Box, Button, FormLabel, TextField, Typography } from '@mui/material';
+import { sendLoginRequest } from '../api-helpers/helpers';
 
 const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
@@ -18,9 +18,9 @@ const Login = () => {
     }
   };
   const [inputs, setInputs] = useState({
-    name: "",
-    username: "",
-    password: "",
+    name: '',
+    username: '',
+    password: '',
   });
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -34,18 +34,18 @@ const Login = () => {
       margin="auto"
       marginTop={10}
       borderRadius={10}
-      boxShadow={"5px 5px 10px #ccc"}
+      boxShadow={'5px 5px 10px #ccc'}
     >
       <form onSubmit={handleSubmit}>
         <Box
           display="flex"
-          flexDirection={"column"}
+          flexDirection={'column'}
           width="60%"
           padding={5}
           margin="auto"
         >
           <Typography padding={1} variant="h4" textAlign="center">
-            {isSignup ? "Signup" : "Login"}
+            {isSignup ? 'Signup' : 'Login'}
           </Typography>
           {isSignup && (
             <>
@@ -81,7 +81,7 @@ const Login = () => {
             type="submit"
             variant="contained"
           >
-            {isSignup ? "Signup" : "Login"}
+            {isSignup ? 'Signup' : 'Login'}
           </Button>
           <Button
             onClick={() => setIsSignup(!isSignup)}
@@ -89,7 +89,7 @@ const Login = () => {
             type="submit"
             variant="outlined"
           >
-            Change to {isSignup ? "Login" : "Signup"}
+            Change to {isSignup ? 'Login' : 'Signup'}
           </Button>
         </Box>
       </form>
