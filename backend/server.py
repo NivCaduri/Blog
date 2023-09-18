@@ -63,7 +63,7 @@ def do_login():
     db.commit()
     cursor.close()
     resp = make_response()
-    resp.set_cookie("session_id", session_id, max_age=1800, httponly=True, secure=True, samesite='Strict')
+    resp.set_cookie("session_id", max_age=1800, httponly=True, secure=True, samesite='Strict')
     return resp
     
 @app.route('/posts', methods=['GET', 'POST'])
@@ -144,13 +144,15 @@ def check_login():
     cursor.close()
     if not record:
         abort(401)
+    return {"user_id": record[0]}
 
 def add_post():
-    # check_login()
+    login_status = check_login()
+    user_id = login_status["user_id"]
     data = request.get_json()
     print(data)
     query = "insert into posts (title, body, user_id) values (%s, %s, %s)"
-    values = (data['title'], data['body'], data['user_id'])
+    values = (data['title'], data['body'], user_id)
     cursor = db.cursor()
     cursor.execute(query, values)
     db.commit()

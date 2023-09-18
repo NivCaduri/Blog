@@ -13,11 +13,18 @@ import {
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import ModeEditOutLineIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
 
-const PostItem = ({ id, title, body, user_id, created_at }) => {
+const PostItem = ({ id, title, body, user_id, created_at, user }) => {
+  const isLoggedInUser = () => {
+    if (localStorage.getItem('userId') === user) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Card
       sx={{
@@ -44,7 +51,7 @@ const PostItem = ({ id, title, body, user_id, created_at }) => {
           </IconButton>
         }
         title={user_id}
-        subheader="February 28, 1994"
+        subheader={created_at}
       />
       <img height="194" src="" alt="" />
       <CardContent>
@@ -58,14 +65,16 @@ const PostItem = ({ id, title, body, user_id, created_at }) => {
           </Typography>
         </Box>
       </CardContent>
-      <CardActions sx={{ marginLeft: 'auto' }}>
-        <IconButton color="warning">
-          <EditIcon />
-        </IconButton>
-        <IconButton color="error">
-          <DeleteIcon />
-        </IconButton>
-      </CardActions>
+      {isLoggedInUser() && (
+        <CardActions sx={{ marginLeft: 'auto' }}>
+          <IconButton LinkComponent={Link} to={`/post/${id}`} color="warning">
+            <ModeEditOutLineIcon />
+          </IconButton>
+          <IconButton color="error">
+            <DeleteForeverIcon />
+          </IconButton>
+        </CardActions>
+      )}
     </Card>
   );
 };

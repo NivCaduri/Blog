@@ -26,8 +26,9 @@ const Home = () => {
             title={item.title}
             body={item.body}
             user_id={item.user_id}
-            created_at={item.created_at}
+            created_at={new Date(`${item.created_at}`).toLocaleDateString()}
             key={index}
+            user={item.user}
           />
         ))}
     </Box>
