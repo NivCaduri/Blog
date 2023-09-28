@@ -26,6 +26,42 @@ def manage_users():
     else:
         return add_user()
     
+def get_all_users():
+    query = "select id, name, username, password from users"
+    cursor = db.cursor()
+    cursor.execute(query)
+    records = cursor.fetchall()
+    cursor.close()
+    print(records)
+    header = ['id', 'name', 'username', 'password']
+    data = []
+    for r in records:
+        data.append(dict(zip(header, r)))
+    return json.dumps(data)
+
+def add_user():
+    data = request.get_json()
+    print(data)
+    hashed_pwd = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
+    query = "insert into users (name, username, password) values (%s, %s, %s)"
+    values = (data['name'], data['username'], hashed_pwd.decode('utf-8'))
+    cursor = db.cursor()
+    cursor.execute(query, values)
+    db.commit()
+    new_user_id = cursor.lastrowid
+    cursor.close()
+    return get_user(new_user_id)
+
+def get_user(id):
+    query = "select id, name, username, password from users where id = %s"
+    values = (id,)
+    cursor = db.cursor()
+    cursor.execute(query, values)
+    record = cursor.fetchone()
+    cursor.close()
+    header = ['id', 'name', 'username', 'password']
+    return json.dumps(dict(zip(header, record)))
+    
 @app.route('/users/signup', methods=['POST'])
 def signup():
     if request.method == 'POST':
@@ -63,7 +99,7 @@ def do_login():
     db.commit()
     cursor.close()
     resp = make_response()
-    resp.set_cookie("session_id", max_age=1800, httponly=True, secure=True, samesite='Strict')
+    resp.set_cookie("session_id", session_id)
     return resp
     
 @app.route('/posts', methods=['GET', 'POST'])
@@ -72,42 +108,6 @@ def manage_posts():
         return get_all_posts()
     else:
         return add_post()
-
-def get_all_users():
-    query = "select id, name, username, password from users"
-    cursor = db.cursor()
-    cursor.execute(query)
-    records = cursor.fetchall()
-    cursor.close()
-    print(records)
-    header = ['id', 'name', 'username', 'password']
-    data = []
-    for r in records:
-        data.append(dict(zip(header, r)))
-    return json.dumps(data)
-
-def get_user(id):
-    query = "select id, name, username, password from users where id = %s"
-    values = (id,)
-    cursor = db.cursor()
-    cursor.execute(query, values)
-    record = cursor.fetchone()
-    cursor.close()
-    header = ['id', 'name', 'username', 'password']
-    return json.dumps(dict(zip(header, record)))
-
-def add_user():
-    data = request.get_json()
-    print(data)
-    hashed_pwd = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
-    query = "insert into users (name, username, password) values (%s, %s, %s)"
-    values = (data['name'], data['username'], hashed_pwd.decode('utf-8'))
-    cursor = db.cursor()
-    cursor.execute(query, values)
-    db.commit()
-    new_user_id = cursor.lastrowid
-    cursor.close()
-    return get_user(new_user_id)
 
 def get_all_posts():
     query = "select id, title, body, user_id from posts"
@@ -121,6 +121,20 @@ def get_all_posts():
     for r in records:
         data.append(dict(zip(header, r)))
     return json.dumps(data)
+
+def add_post():
+    login_status = check_login()
+    user_id = login_status["user_id"]
+    data = request.get_json()
+    print(data)
+    query = "insert into posts (title, body, user_id) values (%s, %s, %s)"
+    values = (data['title'], data['body'], user_id)
+    cursor = db.cursor()
+    cursor.execute(query, values)
+    db.commit()
+    new_post_id = cursor.lastrowid
+    cursor.close()
+    return get_post(new_post_id)
 
 def get_post(id):
     query = "select id, title, body, user_id, created_at from posts where id = %s"
@@ -146,19 +160,31 @@ def check_login():
         abort(401)
     return {"user_id": record[0]}
 
-def add_post():
+@app.route('/profile', methods=['GET', 'DELETE'])
+def manage_profile():
+    if request.method == 'GET':
+        return get_user_details()
+    else:
+        return user_logout()
+    
+def get_user_details():
     login_status = check_login()
     user_id = login_status["user_id"]
-    data = request.get_json()
-    print(data)
-    query = "insert into posts (title, body, user_id) values (%s, %s, %s)"
-    values = (data['title'], data['body'], user_id)
+    return get_user(user_id)
+
+def user_logout():
+    session_id = request.cookies.get("session_id")
+    if not session_id:
+        abort(401)
+    query = "delete from sessions where session_id = %s"
+    values = (session_id,)
     cursor = db.cursor()
     cursor.execute(query, values)
-    db.commit()
-    new_post_id = cursor.lastrowid
     cursor.close()
-    return get_post(new_post_id)
+    db.commit()
+    resp = make_response()
+    resp.set_cookie("session_id", "", expires=0)
+    return resp
 
 if __name__ == "__main__":
     app.run()

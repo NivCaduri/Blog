@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getPostDetails, postUpdate } from '../api-helpers/helpers';
-import { Box, FormLabel, TextField } from '@mui/material';
+import { Box, Button, FormLabel, TextField, Typography } from '@mui/material';
 
 const PostUpdate = () => {
   const [post, setPost] = useState();

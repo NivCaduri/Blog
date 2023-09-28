@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -9,6 +10,7 @@ import {
   CardHeader,
   CardMedia,
   IconButton,
+  Snackbar,
   Typography,
 } from '@mui/material';
 import { red } from '@mui/material/colors';
@@ -16,8 +18,10 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ModeEditOutLineIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/Delete';
 import { Link } from 'react-router-dom';
+import { postDelete } from '../api-helpers/helpers';
 
 const PostItem = ({ id, title, body, user_id, created_at, user }) => {
+  const [open, setOpen] = useState(false);
   const isLoggedInUser = () => {
     if (localStorage.getItem('userId') === user) {
       return true;
@@ -25,6 +29,12 @@ const PostItem = ({ id, title, body, user_id, created_at, user }) => {
     return false;
   };
 
+  const handleDelete = () => {
+    postDelete(id)
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+    setOpen(true);
+  };
   return (
     <Card
       sx={{
@@ -67,14 +77,31 @@ const PostItem = ({ id, title, body, user_id, created_at, user }) => {
       </CardContent>
       {isLoggedInUser() && (
         <CardActions sx={{ marginLeft: 'auto' }}>
-          <IconButton LinkComponent={Link} to={`/post/${id}`} color="warning">
+          <IconButton
+            LinkComponent={Link}
+            to={`/update_post/${id}`}
+            color="warning"
+          >
             <ModeEditOutLineIcon />
           </IconButton>
-          <IconButton color="error">
+          <IconButton onClick={handleDelete} color="error">
             <DeleteForeverIcon />
           </IconButton>
         </CardActions>
       )}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert
+          onClose={() => setOpen(false)}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          This is a success message!
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };

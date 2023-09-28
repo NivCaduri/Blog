@@ -6,6 +6,8 @@ import New from './new/New';
 import Login from './login/Login';
 import OpenPost from './home/OpenPost';
 import { useSelector } from 'react-redux';
+import PostUpdate from './home/PostUpdate';
+import Profile from './profile/Profile';
 
 function App() {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
@@ -23,6 +25,8 @@ function App() {
           <Route path="/new" element={<New />} />
           <Route path="/login" element={<Login />} />
           <Route path="/post/:id" element={<OpenPost />} />
+          <Route path="/update_post/:id" element={<PostUpdate />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </section>
     </div>

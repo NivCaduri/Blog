@@ -37,7 +37,6 @@ export const addPost = async (data) => {
       {
         title: data.title,
         body: data.body,
-        user_id: data.user_id,
       },
       { withCredentials: true }
     )
@@ -75,4 +74,46 @@ export const postUpdate = async (data, id) => {
 
   const resData = await res.data;
   return resData;
+};
+
+export const postDelete = async (id) => {
+  const res = await axios
+    .delete(`/posts/${id}`)
+    .catch((err) => console.log(err));
+
+  if (res.status !== 200) {
+    return console.log('Unable to delete');
+  }
+
+  const resData = await res.data;
+  return resData;
+};
+
+export const getUserDetails = async () => {
+  const res = await axios
+    .get('/profile', { withCredentials: true })
+    .catch((err) => console.log(err));
+  if (res.status !== 200) {
+    return console.log('No user found');
+  }
+  const resData = await res.data;
+  return resData;
+};
+
+export const userLogout = async () => {
+  try {
+    const res = await axios.delete('/profile', { withCredentials: true });
+
+    if (res && res.status === 200) {
+      const resData = await res.data;
+      return resData;
+    } else {
+      console.log(
+        'Unable to logout. Status code:',
+        res ? res.status : 'Unknown'
+      );
+    }
+  } catch (err) {
+    console.log('An error occurred while logging out:', err);
+  }
 };

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const linksArr = ['home', 'about', 'login'];
-const loggedInLinks = ['home', 'about', 'new', 'logout'];
+const loggedInLinks = ['home', 'about', 'new', 'profile'];
 const Header = () => {
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const [value, setValue] = useState();

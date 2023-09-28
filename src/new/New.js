@@ -6,7 +6,6 @@ const New = () => {
   const [inputs, setInputs] = useState({
     title: '',
     body: '',
-    user_id: '',
   });
   const handleChange = (e) => {
     setInputs((prevState) => ({
@@ -49,14 +48,6 @@ const New = () => {
             onChange={handleChange}
             name="body"
             value={inputs.body}
-            variant="standard"
-            margin="normal"
-          />
-          <FormLabel>User ID</FormLabel>
-          <TextField
-            onChange={handleChange}
-            name="user_id"
-            value={inputs.user_id}
             variant="standard"
             margin="normal"
           />

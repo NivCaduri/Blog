@@ -6,7 +6,7 @@ import { loginActions } from '../store';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [isSignup, setIsSignup] = useState(true);
+  const [isSignup, setIsSignup] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
