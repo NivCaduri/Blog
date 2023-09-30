@@ -160,6 +160,25 @@ def check_login():
         abort(401)
     return {"user_id": record[0]}
 
+@app.route('/posts/<id>', methods=['PUT', 'DELETE'])
+def manage_post(id):
+    if request.method == 'PUT':
+        return update_post(id)
+    else:
+        return delete_post(id)
+    
+def update_post(post_id):
+    return
+
+def delete_post(id):
+    query = "delete from posts where id = %s"
+    values = (id,)
+    cursor = db.cursor()
+    cursor.execute(query, values)
+    cursor.close()
+    db.commit()
+    return get_all_posts()
+
 @app.route('/profile', methods=['GET', 'DELETE'])
 def manage_profile():
     if request.method == 'GET':

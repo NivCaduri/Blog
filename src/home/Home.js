@@ -20,15 +20,13 @@ const Home = () => {
     >
       {' '}
       {posts &&
-        posts.map((item, index) => (
+        posts.map((item) => (
           <PostItem
-            id={item._id}
+            id={item.id}
             title={item.title}
             body={item.body}
             user_id={item.user_id}
-            created_at={new Date(`${item.created_at}`).toLocaleDateString()}
-            key={index}
-            user={item.user}
+            created_at={new Date(item.created_at).toLocaleDateString()}
           />
         ))}
     </Box>

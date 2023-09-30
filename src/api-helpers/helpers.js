@@ -77,16 +77,21 @@ export const postUpdate = async (data, id) => {
 };
 
 export const postDelete = async (id) => {
-  const res = await axios
-    .delete(`/posts/${id}`)
-    .catch((err) => console.log(err));
+  try {
+    const res = await axios.delete(`/posts/${id}`, { withCredentials: true });
 
-  if (res.status !== 200) {
-    return console.log('Unable to delete');
+    if (res && res.status === 200) {
+      const resData = await res.data;
+      return resData;
+    } else {
+      console.log(
+        'Unable to delete. Status code:',
+        res ? res.status : 'Unknown'
+      );
+    }
+  } catch (err) {
+    console.log('An error occurred while logging out:', err);
   }
-
-  const resData = await res.data;
-  return resData;
 };
 
 export const getUserDetails = async () => {
