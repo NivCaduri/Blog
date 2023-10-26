@@ -96,7 +96,7 @@ export const postDelete = async (id) => {
 
 export const getUserDetails = async () => {
   const res = await axios
-    .get('/profile', { withCredentials: true })
+    .get('/display_profile', { withCredentials: true })
     .catch((err) => console.log(err));
   if (res.status !== 200) {
     return console.log('No user found');
@@ -107,7 +107,9 @@ export const getUserDetails = async () => {
 
 export const userLogout = async () => {
   try {
-    const res = await axios.delete('/profile', { withCredentials: true });
+    const res = await axios.delete('/display_profile', {
+      withCredentials: true,
+    });
 
     if (res && res.status === 200) {
       const resData = await res.data;
