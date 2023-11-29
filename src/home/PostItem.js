@@ -59,17 +59,17 @@ const PostItem = ({ id, title, body, user_id, created_at }) => {
             avatar={
               <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe"></Avatar>
             }
-            action={
-              <IconButton
-                aria-label="settings"
-                LinkComponent={Link}
-                to={`/post/${id}`}
-              >
-                {<OpenInNewIcon />}
-              </IconButton>
-            }
+            // action={
+            //   <IconButton
+            //     aria-label="settings"
+            //     LinkComponent={Link}
+            //     to={`/post/${id}`}
+            //   >
+            //     {<OpenInNewIcon />}
+            //   </IconButton>
+            // }
             title={user_id}
-            subheader={created_at}
+            // subheader={created_at}
           />
           <img height="194" src="" alt="" />
           <CardContent>

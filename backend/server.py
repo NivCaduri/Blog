@@ -9,6 +9,8 @@ import bcrypt
 pool = mysql.pooling.MySQLConnectionPool(
     host = "niv-db-instance.cbrdyb6rueag.eu-central-1.rds.amazonaws.com",
     user = "admin",
+    # host = "localhost",
+    # user = "root",
     passwd = dbpwd,
     database = "blog",
     buffered=True,
@@ -178,13 +180,13 @@ def add_post():
 
 def get_post(id):
     db = pool.get_connection()
-    query = "select id, title, body, user_id, created_at from posts where id = %s"
+    query = "select id, title, body, user_id from posts where id = %s"
     values = (id,)
     cursor = db.cursor()
     cursor.execute(query, values)
     record = cursor.fetchone()
     cursor.close()
-    header = ['id', 'title', 'body', 'user_id', 'created_at']
+    header = ['id', 'title', 'body', 'user_id']
     db.close()
     return json.dumps(dict(zip(header, record)))
 
@@ -206,15 +208,27 @@ def check_login():
     db.close()
     return {"user_id": record[0]}
 
-@app.route('/posts/<id>', methods=['PUT', 'DELETE'])
+@app.route('/posts/<id>', methods=['PUT', 'DELETE', 'GET'])
 def manage_post(id):
     if request.method == 'PUT':
         return update_post(id)
-    else:
+    elif request.method == 'DELETE':
         return delete_post(id)
+    else:
+        return get_post(id)
     
-def update_post(post_id):
-    return
+def update_post(id):
+    db = pool.get_connection()
+    data = request.get_json()
+    print(data)
+    query = "update posts set title = %s, body = %s where id = %s"
+    values = (data['title'], data['body'], id)
+    cursor = db.cursor()
+    cursor.execute(query, values)
+    cursor.close()
+    db.commit()
+    db.close()
+    return get_post(id)
 
 def delete_post(id):
     db = pool.get_connection()

@@ -8,18 +8,18 @@ const PostUpdate = () => {
   const [inputs, setInputs] = useState({
     title: '',
     body: '',
-    user_id: '',
+    // user_id: '',
   });
   const id = useParams().id;
   console.log(id);
   useEffect(() => {
     getPostDetails(id)
       .then((data) => {
-        setPost(data.post);
+        setPost(data);
         setInputs({
-          title: data.post.title,
-          body: data.post.body,
-          user_id: data.post.user_id,
+          title: data.title,
+          body: data.body,
+          // user_id: data.user_id,
         });
       })
       .catch((err) => console.log(err));
@@ -34,9 +34,9 @@ const PostUpdate = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(inputs);
-    postUpdate(inputs, id).then((data) =>
-      console.log(data).catch((err) => console.log(err))
-    );
+    postUpdate(inputs, id)
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
   };
   return (
     <Box display="flex" flexDirection={'column'} width="100%" height="100%">
@@ -70,14 +70,14 @@ const PostUpdate = () => {
               variant="standard"
               margin="normal"
             />
-            <FormLabel>User ID</FormLabel>
+            {/* <FormLabel>User ID</FormLabel>
             <TextField
               onChange={handleChange}
               name="user_id"
               value={inputs.user_id}
               variant="standard"
               margin="normal"
-            />
+            /> */}
             <Button
               type="submit"
               color="warning"
